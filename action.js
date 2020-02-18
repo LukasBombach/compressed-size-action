@@ -51,14 +51,12 @@ async function run(octokit, context) {
 
 	startGroup(`[current] Install Dependencies`);
 	console.log(`Installing using ${installScript}`);
-	await exec(`cd ${workingDirectory}`);
-	await exec(installScript);
+	await exec(`cd ${workingDirectory};` + installScript);
 	endGroup();
 
 	startGroup(`[current] Build using ${npm}`);
 	console.log(`Building using ${npm} run ${buildScript}`);
-	await exec(`cd ${workingDirectory}`);
-	await exec(`${npm} run ${buildScript}`);
+	await exec(`cd ${workingDirectory};` + `${npm} run ${buildScript}`);
 	endGroup();
 
 	const newSizes = await plugin.readFromDisk(cwd);
@@ -96,13 +94,11 @@ async function run(octokit, context) {
 	endGroup();
 
 	startGroup(`[base] Install Dependencies`);
-	await exec(`cd ${workingDirectory}`);
-	await exec(installScript);
+	await exec(`cd ${workingDirectory};` + installScript);
 	endGroup();
 
 	startGroup(`[current] Build using ${npm}`);
-	await exec(`cd ${workingDirectory}`);
-	await exec(`${npm} run ${buildScript}`);
+	await exec(`cd ${workingDirectory};` + `${npm} run ${buildScript}`);
 	endGroup();
 
 	const oldSizes = await plugin.readFromDisk(cwd);
