@@ -35,6 +35,7 @@ async function run(octokit, context) {
 
 	const buildScript = getInput('build-script') || 'build';
 	const cwd = process.cwd();
+	const workingDirectory = path.resolve(cwd, getInput('working-directory') || "");
 
 	const yarnLock = await fileExists(path.resolve(cwd, 'yarn.lock'));
 	const packageLock = await fileExists(path.resolve(cwd, 'package-lock.json'));
@@ -49,12 +50,14 @@ async function run(octokit, context) {
 	}
 
 	startGroup(`[current] Install Dependencies`);
-	console.log(`Installing using ${installScript}`)
+	console.log(`Installing using ${installScript}`);
+	await exec(`cd ${workingDirectory}`);
 	await exec(installScript);
 	endGroup();
 
 	startGroup(`[current] Build using ${npm}`);
 	console.log(`Building using ${npm} run ${buildScript}`);
+	await exec(`cd ${workingDirectory}`);
 	await exec(`${npm} run ${buildScript}`);
 	endGroup();
 
@@ -93,10 +96,12 @@ async function run(octokit, context) {
 	endGroup();
 
 	startGroup(`[base] Install Dependencies`);
+	await exec(`cd ${workingDirectory}`);
 	await exec(installScript);
 	endGroup();
 
 	startGroup(`[current] Build using ${npm}`);
+	await exec(`cd ${workingDirectory}`);
 	await exec(`${npm} run ${buildScript}`);
 	endGroup();
 
