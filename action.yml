@@ -8,6 +8,9 @@ inputs:
   repo-token:
     description: 'The GITHUB_TOKEN secret'
     required: true
+  working-directory:
+    description: 'The working directory to run commands in'
+    default: 'build'
   build-script:
     description: 'The npm-script to run that builds your project'
     default: 'build'
